@@ -3,27 +3,28 @@ package tilde
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
-func Expand(path string) (string, error) {
-	home, sep, err := readEnv()
-	if err != nil {
-		return path, fmt.Errorf("expand %s: %w", path, err)
-	}
+func Expand(name string) (_ string, err error) {
+	name = filepath.Clean(name)
+	sep := string(filepath.Separator)
 
-	pp := strings.SplitN(path, sep, 2)
+	pp := strings.SplitN(name, sep, 2)
 	if pp[0] == "~" {
-		pp[0] = home
+		v, err := homeFromEnv()
+		if err != nil {
+			return name, fmt.Errorf("expand %s: %w", name, err)
+		}
+		pp[0] = filepath.Clean(v)
 	}
 	return strings.Join(pp, sep), nil
 }
 
-func readEnv() (home, sep string, _ error) {
+func homeFromEnv() (string, error) {
 	if v := os.Getenv("HOME"); v != "" {
-		return v, "/", nil
+		return v, nil
 	}
-	sep = string(os.PathSeparator)
-	v, err := os.UserHomeDir()
-	return v, sep, err
+	return os.UserHomeDir()
 }
