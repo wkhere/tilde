@@ -2,7 +2,6 @@ package tilde
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 )
@@ -20,11 +19,4 @@ func Expand(name string) (_ string, err error) {
 		pp[0] = filepath.Clean(v)
 	}
 	return strings.Join(pp, sep), nil
-}
-
-func homeFromEnv() (string, error) {
-	if v := os.Getenv("HOME"); v != "" {
-		return v, nil
-	}
-	return os.UserHomeDir()
 }
