@@ -1,4 +1,5 @@
-go: vet
+go:
+	go test .
 	go build
 
 vet:
