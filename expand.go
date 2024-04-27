@@ -7,7 +7,6 @@ import (
 )
 
 func Expand(name string) (_ string, err error) {
-	name = filepath.Clean(name)
 	sep := string(filepath.Separator)
 
 	pp := strings.SplitN(name, sep, 2)
@@ -16,7 +15,7 @@ func Expand(name string) (_ string, err error) {
 		if err != nil {
 			return name, fmt.Errorf("expand %s: %w", name, err)
 		}
-		pp[0] = filepath.Clean(v)
+		pp[0] = v
 	}
 	return strings.Join(pp, sep), nil
 }
