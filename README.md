@@ -4,7 +4,8 @@ tilde
 Expand tilde `~` to home dir.
 
 
-The expansion follows this specific flow:
+The expansion happens only when tilde is at the beginning of the input string,
+and follows this specific flow:
 
 On windows at first HOME is used, and if it's not present or is empty,
 there goes %USERPROFILE% (via `os.UserHomeDir`).
